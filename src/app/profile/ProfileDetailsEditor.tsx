@@ -71,9 +71,12 @@ export default function ProfileDetailsEditor({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 rounded-xl bg-zinc-950 p-4 md:col-span-2">
+    <form onSubmit={handleSubmit} className="auth-card space-y-4 rounded-[1.25rem] p-5 md:col-span-2">
       <div>
-        <label htmlFor="display-name" className="mb-2 block text-sm text-zinc-400">
+        <label
+          htmlFor="display-name"
+          className="mb-2 block text-xs uppercase tracking-[0.25em] text-on-surface-variant/75"
+        >
           Display name
         </label>
         <input
@@ -83,12 +86,15 @@ export default function ProfileDetailsEditor({
           onChange={(event) => setDisplayName(event.target.value)}
           maxLength={40}
           required
-          className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="neu-inset w-full rounded-xl border border-white/5 bg-surface-container-lowest px-4 py-3 text-white placeholder:text-on-surface-variant/30 focus:outline-none focus:ring-1 focus:ring-brand-teal"
         />
       </div>
 
       <div>
-        <label htmlFor="bio" className="mb-2 block text-sm text-zinc-400">
+        <label
+          htmlFor="bio"
+          className="mb-2 block text-xs uppercase tracking-[0.25em] text-on-surface-variant/75"
+        >
           Bio
         </label>
         <textarea
@@ -98,7 +104,7 @@ export default function ProfileDetailsEditor({
           maxLength={255}
           rows={3}
           placeholder="Add a short bio"
-          className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="neu-inset w-full rounded-xl border border-white/5 bg-surface-container-lowest px-4 py-3 text-white placeholder:text-on-surface-variant/30 focus:outline-none focus:ring-1 focus:ring-brand-teal"
         />
       </div>
 
@@ -106,7 +112,7 @@ export default function ProfileDetailsEditor({
         <button
           type="submit"
           disabled={saving}
-          className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-800"
+          className="auth-primary-button rounded-xl px-5 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
         >
           {saving ? "Saving..." : "Save changes"}
         </button>

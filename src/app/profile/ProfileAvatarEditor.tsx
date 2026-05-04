@@ -184,7 +184,7 @@ export default function ProfileAvatarEditor({
   return (
     <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-5">
       <div className="relative">
-        <div className="rounded-full border border-zinc-800 shadow-lg shadow-blue-950/30">
+        <div className="rounded-full border border-white/10 bg-black/20 shadow-[0_18px_40px_rgba(5,5,8,0.45)]">
           <ProfileAvatar
             avatarUrl={localPreviewUrl ?? savedAvatarUrl}
             alt={`${displayName} avatar`}
@@ -200,7 +200,7 @@ export default function ProfileAvatarEditor({
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={isBusy}
-          className="absolute bottom-0 right-0 flex h-9 w-9 items-center justify-center rounded-full border border-zinc-800 bg-zinc-900 text-zinc-100 transition hover:border-zinc-700 hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-70"
+          className="absolute bottom-0 right-0 flex h-9 w-9 items-center justify-center rounded-full border border-brand-lavender/30 bg-[#15151f] text-zinc-100 transition hover:border-brand-lavender/60 hover:bg-[#1c1c29] disabled:cursor-not-allowed disabled:opacity-70"
           aria-label="Change profile picture"
         >
           {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
@@ -216,10 +216,10 @@ export default function ProfileAvatarEditor({
       </div>
 
       <div className="space-y-1">
-        <p className="text-sm uppercase tracking-[0.3em] text-zinc-500">
+        <p className="text-sm uppercase tracking-[0.3em] text-brand-lavender/70">
           Profile photo
         </p>
-        <p className="text-sm text-zinc-300">
+        <p className="text-sm text-on-surface-variant">
           Tap the edit icon to choose an image from your files or gallery.
         </p>
         {hasVisibleAvatar ? (

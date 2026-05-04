@@ -32,17 +32,32 @@ export async function backendRequest<TResponse>(
   } = await safeGetClientSession<BrowserSession>(supabase);
 
   if (!session?.access_token) {
-    throw new Error("You must be signed in to use student analytics.");
+    throw new Error("You must be signed in to use this feature.");
   }
 
-  const response = await fetch(`${getBackendBaseUrl()}${path}`, {
-    method: options.method ?? "GET",
-    headers: {
-      Authorization: `Bearer ${session.access_token}`,
-      ...(options.body ? { "Content-Type": "application/json" } : {}),
-    },
-    body: options.body ? JSON.stringify(options.body) : undefined,
-  });
+  const accessToken = session.access_token;
+  const backendBaseUrl = getBackendBaseUrl();
+
+  let response: Response;
+
+  try {
+    response = await fetch(`${backendBaseUrl}${path}`, {
+      method: options.method ?? "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        ...(options.body ? { "Content-Type": "application/json" } : {}),
+      },
+      body: options.body ? JSON.stringify(options.body) : undefined,
+    });
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new Error(
+        `Backend is unreachable at ${backendBaseUrl}. Start the backend server with: cd backend && npm run dev`
+      );
+    }
+
+    throw error;
+  }
 
   const payload = (await response.json().catch(() => null)) as
     | TResponse
@@ -59,4 +74,45 @@ export async function backendRequest<TResponse>(
   }
 
   return payload as TResponse;
+}
+
+export async function backendFileRequest(path: string) {
+  const supabase = createClient();
+  const {
+    data: { session },
+  } = await safeGetClientSession<BrowserSession>(supabase);
+
+  if (!session?.access_token) {
+    throw new Error("You must be signed in to download files.");
+  }
+  const backendBaseUrl = getBackendBaseUrl();
+
+  let response: Response;
+
+  try {
+    response = await fetch(`${backendBaseUrl}${path}`, {
+      headers: {
+        Authorization: `Bearer ${session.access_token}`,
+      },
+    });
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new Error(
+        `Backend is unreachable at ${backendBaseUrl}. Start the backend server with: cd backend && npm run dev`
+      );
+    }
+
+    throw error;
+  }
+
+  if (!response.ok) {
+    const payload = (await response.json().catch(() => null)) as
+      | { error?: string }
+      | null;
+    throw new Error(
+      payload?.error || `Backend file request failed with status ${response.status}`
+    );
+  }
+
+  return response;
 }
