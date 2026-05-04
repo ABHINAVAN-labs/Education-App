@@ -1,4 +1,4 @@
-import { Response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 import { ZodError } from 'zod';
 
 import { authMiddleware } from '../../middleware/auth';
@@ -24,7 +24,7 @@ const router = Router();
 
 router.use(authMiddleware);
 
-router.post('/events', async (req, res) => {
+router.post('/events', async (req: Request, res: Response) => {
   try {
     const input = createStudentEventSchema.parse(req.body);
     const result = await createStudentEvent(req.user!.id, input);
@@ -34,7 +34,7 @@ router.post('/events', async (req, res) => {
   }
 });
 
-router.post('/daily-activities', async (req, res) => {
+router.post('/daily-activities', async (req: Request, res: Response) => {
   try {
     const input = createDailyActivitySchema.parse(req.body);
     const result = await createDailyActivity(req.user!.id, input);
@@ -44,7 +44,7 @@ router.post('/daily-activities', async (req, res) => {
   }
 });
 
-router.post('/mcq-sessions', async (req, res) => {
+router.post('/mcq-sessions', async (req: Request, res: Response) => {
   try {
     const input = createMcqSessionSchema.parse(req.body);
     const result = await createMcqSession(req.user!.id, input);
@@ -54,7 +54,7 @@ router.post('/mcq-sessions', async (req, res) => {
   }
 });
 
-router.post('/mcq-sessions/:mcqSessionId/responses', async (req, res) => {
+router.post('/mcq-sessions/:mcqSessionId/responses', async (req: Request, res: Response) => {
   try {
     const { mcqSessionId } = mcqSessionParamsSchema.parse(req.params);
     const input = createMcqResponsesSchema.parse(req.body);
@@ -65,7 +65,7 @@ router.post('/mcq-sessions/:mcqSessionId/responses', async (req, res) => {
   }
 });
 
-router.get('/students/:studentId/card', async (req, res) => {
+router.get('/students/:studentId/card', async (req: Request, res: Response) => {
   try {
     const { studentId } = studentCardParamsSchema.parse(req.params);
     const result = await getStudentCard(req.user!.id, studentId);

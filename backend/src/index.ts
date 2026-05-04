@@ -1,19 +1,21 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 
 import { envPath } from './env';
 import { pool, supabaseAuthClient } from './database';
+import { classroomRouter } from './modules/classroom';
 import { studentAnalyticsRouter } from './modules/student-analytics';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '15mb' }));
 
+app.use('/api', classroomRouter);
 app.use('/student-analytics', studentAnalyticsRouter);
 
-app.get('/health', (_req, res) => {
+app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 

@@ -8,10 +8,6 @@ const supabaseKey =
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
   process.env.SUPABASE_PUBLISHABLE_KEY;
 
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error("Missing Supabase env vars (middleware)");
-}
-
 export const updateSession = async (request: NextRequest) => {
   // Create an unmodified response
   let supabaseResponse = NextResponse.next({
@@ -19,6 +15,12 @@ export const updateSession = async (request: NextRequest) => {
       headers: request.headers,
     },
   });
+
+  // Keep middleware non-fatal during local setup so the app can boot
+  // while env files are being configured.
+  if (!supabaseUrl || !supabaseKey) {
+    return { response: supabaseResponse, user: null };
+  }
 
   const supabase = createServerClient(
     supabaseUrl,
